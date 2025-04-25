@@ -39,21 +39,47 @@ def generar_reporte():
     #agregar encabezados
     ws_reporte.cell(row=1, column=1, value='Estadisticas').font = Font(bold=True)
     ws_reporte.cell(row=1, column=2, value='Numeros').font = Font(bold=True)
-    ws_reporte.cell(row=1, column=2, value='Poecentajes').font = Font(bold=True)
+    ws_reporte.cell(row=1, column=3, value='Porcentajes').font = Font(bold=True)
     ws_reporte.cell(row=2, column=1, value='Numero total de estudiantes')
     ws_reporte.cell(row=3, column=1, value='Numero de estudiantes aprobados (nota >= 70)')
-    ws_reporte.cell(row=4, column=1, value='porcentaje de estudiantes aprobados (nota >= 70)')
-    ws_reporte.cell(row=5, column=1, value='Numero y porcentaje de estudiantes reprobados (nota < 70)')
-    ws_reporte.cell(row=6, column=1, value='porcentaje de estudiantes reprobados con notas entre 60 y 69')
+    ws_reporte.cell(row=4, column=1, value='Porcentaje de estudiantes aprobados (nota >= 70)')
+    ws_reporte.cell(row=5, column=1, value='Numero de estudiantes reprobados (nota < 70)')
+    ws_reporte.cell(row=6, column=1, value='Porcentaje de estudiantes reprobados (nota < 70)')
     ws_reporte.cell(row=7, column=1, value='Numero de estudiantes reprobados con notas entre 60 y 69')
-    ws_reporte.cell(row=8, column=1, value='Media de las notas')
-    ws_reporte.cell(row=9, column=1, value='Desviación estandar de las notas')
+    ws_reporte.cell(row=8, column=1, value='Porcentaje de estudiantes reprobados con notas entre 60 y 69')
+    ws_reporte.cell(row=9, column=1, value='Media de las notas')
+    ws_reporte.cell(row=10, column=1, value='Desviación estandar de las notas')
 
     #calcular total de estudiantes
     ws_reporte.cell(row=2, column=2, value=f"=COUNTA(notas!A2:A{ws.max_row})")
+
     #calcular numero de estudiantes aprobados (nota >= 70)
-    #ws_reporte.cell(row=3, column=3, value=f'=COUNTIF(notas!B2:B{ws.max_row}";>=70")')
+    ws_reporte.cell(row=3, column=2, value=f'=COUNTIF(notas!B2:B{ws.max_row},">=70")')
+
+    #calcular porcentaje de estudiantes aprobados (nota >= 70)
+    ws_reporte.cell(row=3, column=3, value=f"=B3/B2")
+
+    #calcular numero de estudiantes reprobados (nota < 70)
+    
+
+    #calcular porcentaje de estudiantes aprobados (nota >= 70)
+
+
+    #calcular numero de estudiantes reprobados con notas entre 60 y 69
+
+
+    #calcular porcentaje de estudiantes reprobados con notas entre 60 y 69
+
+
+    #calcular media de las notas
+
+
+    #calcular desviación estandar de las notas
+    
+
 
     ws_reporte.column_dimensions[openpyxl.utils.get_column_letter(1)].width = 50
-    
+    ws_reporte.column_dimensions[openpyxl.utils.get_column_letter(3)].width = 11
+    ws_reporte["C3"].number_format = '0.00%'
+
     return wb
