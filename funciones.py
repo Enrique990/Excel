@@ -1,4 +1,4 @@
-import openpyxl
+
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
 import datetime
@@ -60,15 +60,20 @@ def generar_reporte():
     ws_reporte.cell(row=3, column=3, value=f"=B3/B2")
 
     #calcular numero de estudiantes reprobados (nota < 70)
-    
+    ws_reporte.cell(row=5, column=2, value=f'=COUNTIF(notas!B2:B{ws.max_row},"<70")')
 
     #calcular porcentaje de estudiantes aprobados (nota >= 70)
-
+    ws_reporte.cell(row=6, column=2, value=f"=B5")  # opcional, repetir valor absoluto
+    ws_reporte.cell(row=6, column=3, value=f"=B5/B2")
+    ws_reporte["C6"].number_format = '0.00%'
 
     #calcular numero de estudiantes reprobados con notas entre 60 y 69
-
+    ws_reporte.cell(row=7, column=2, value=f'=COUNTIFS(notas!B2:B{ws.max_row},">=60",notas!B2:B{ws.max_row},"<70")')
 
     #calcular porcentaje de estudiantes reprobados con notas entre 60 y 69
+    ws_reporte.cell(row=8, column=2, value=f"=B7")  # opcional, solo para mantener consistencia
+    ws_reporte.cell(row=8, column=3, value=f"=B7/B2")
+    ws_reporte["C8"].number_format = '0.00%'
 
 
     #calcular media de las notas
