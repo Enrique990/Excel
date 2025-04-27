@@ -77,6 +77,7 @@ def generar_reporte():
     ws_reporte["C8"].number_format = '0.00%'
 
     #calcular media de las notas
+    ws_reporte.cell(row=9, column=2, value=f"=AVERAGE(notas!B2:B{ws.max_row})")
 
 
     #calcular desviación estandar de las notas
