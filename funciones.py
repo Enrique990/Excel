@@ -57,12 +57,13 @@ def generar_reporte():
     ws_reporte.cell(row=3, column=2, value=f'=COUNTIF(notas!B2:B{ws.max_row},">=70")')
 
     #calcular porcentaje de estudiantes aprobados (nota >= 70)
-    ws_reporte.cell(row=3, column=3, value=f"=B3/B2")
+    ws_reporte.cell(row=4, column=3, value=f"=B3/B2")
+    ws_reporte["C4"].number_format = '0.00%'
 
     #calcular numero de estudiantes reprobados (nota < 70)
     ws_reporte.cell(row=5, column=2, value=f'=COUNTIF(notas!B2:B{ws.max_row},"<70")')
 
-    #calcular porcentaje de estudiantes aprobados (nota >= 70)
+    #calcular porcentaje de estudiantes reprobados (nota < 70)
     ws_reporte.cell(row=6, column=2, value=f"=B5")  # opcional, repetir valor absoluto
     ws_reporte.cell(row=6, column=3, value=f"=B5/B2")
     ws_reporte["C6"].number_format = '0.00%'
@@ -75,7 +76,6 @@ def generar_reporte():
     ws_reporte.cell(row=8, column=3, value=f"=B7/B2")
     ws_reporte["C8"].number_format = '0.00%'
 
-
     #calcular media de las notas
 
 
@@ -85,6 +85,5 @@ def generar_reporte():
 
     ws_reporte.column_dimensions[openpyxl.utils.get_column_letter(1)].width = 50
     ws_reporte.column_dimensions[openpyxl.utils.get_column_letter(3)].width = 11
-    ws_reporte["C3"].number_format = '0.00%'
 
     return wb
