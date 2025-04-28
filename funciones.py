@@ -81,9 +81,7 @@ def generar_reporte():
 
     #calcular desviación estandar de las notas
     ws_reporte.cell(row=10, column=2, value=f"=STDEVP(notas!B2:B{ws.max_row})")
-    ws_reporte.cell(row=10, column=2).data_type = 'f'  # Tipo fórmula
     ws_reporte["B10"].number_format = '0.00'
-
 
     ws_reporte.column_dimensions[openpyxl.utils.get_column_letter(1)].width = 50
     ws_reporte.column_dimensions[openpyxl.utils.get_column_letter(3)].width = 11
