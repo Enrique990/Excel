@@ -7,13 +7,12 @@ import openpyxl.utils
 def cargar_notas():
     try:
         wb = openpyxl.load_workbook('notas_estudiantes.xlsx')
-    except FileExistsError:
+    except FileNotFoundError:
         print("No se encontro el archivo de notas")
         return None
     
     ws = wb.active
     ws.title = "notas"
-
     return  wb, ws
 
 def automatizacion_notas():
@@ -22,14 +21,53 @@ def automatizacion_notas():
         return
     
     wb = generar_reporte()
-
     wb.save('notas_estudiantes.xlsx')
-    print("proceso completado")
+    print("\nProceso completado. Resultados mostrados arriba y archivo guardado.")
+
+def calcular_estadisticas(ws):
+    """Calcula estadísticas desde los datos y las imprime en consola"""
+    notas = [cell.value for row in ws.iter_rows(min_row=2, min_col=2, max_col=2) 
+             for cell in row if isinstance(cell.value, (int, float))]
+    
+    if not notas:
+        print("No se encontraron notas válidas")
+        return None
+    
+    total = len(notas)
+    aprobados = sum(1 for n in notas if n >= 70)
+    reprobados = total - aprobados
+    reprobados_60_69 = sum(1 for n in notas if 60 <= n < 70)
+    media = sum(notas)/total
+    varianza = sum((n-media)**2 for n in notas)/total
+    desviacion = varianza**0.5
+    
+    # Imprimir resultados en consola
+    print("\n=== RESULTADOS CALCULADOS EN PYTHON ===")
+    print(f"1. Número total de estudiantes: {total}")
+    print(f"2. Estudiantes aprobados (nota >= 70): {aprobados} ({aprobados/total*100:.2f}%)")
+    print(f"3. Estudiantes reprobados (nota < 70): {reprobados} ({reprobados/total*100:.2f}%)")
+    print(f"4. Reprobados con notas entre 60-69: {reprobados_60_69} ({reprobados_60_69/total*100:.2f}%)")
+    print(f"5. Media de las notas: {media:.2f}")
+    print(f"6. Desviación estándar de las notas: {desviacion:.2f}")
+    
+    return {
+        'total': total,
+        'aprobados': aprobados,
+        'porc_aprobados': aprobados/total,
+        'reprobados': reprobados,
+        'porc_reprobados': reprobados/total,
+        'reprobados_60_69': reprobados_60_69,
+        'porc_reprobados_60_69': reprobados_60_69/total,
+        'media': media,
+        'desviacion': desviacion
+    }
 
 def generar_reporte():
     wb, ws = cargar_notas()
     if not wb:
         return
+    
+    calcular_estadisticas(ws)
     
     #crear una hoja nueva para el reporte
     fecha_actual = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
