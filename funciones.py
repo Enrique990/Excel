@@ -2,7 +2,6 @@
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
 import datetime
-
 import openpyxl.utils
 
 def cargar_notas():
@@ -81,7 +80,8 @@ def generar_reporte():
     ws_reporte["B9"].number_format = '0.00'
 
     #calcular desviación estandar de las notas
-    ws_reporte.cell(row=10, column=2, value=f"=STDEV.P(notas!B2:B{ws.max_row})")
+    ws_reporte.cell(row=10, column=2, value=f"=STDEVP(notas!B2:B{ws.max_row})")
+    ws_reporte.cell(row=10, column=2).data_type = 'f'  # Tipo fórmula
     ws_reporte["B10"].number_format = '0.00'
 
 
